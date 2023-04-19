@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
+    <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script src="https://kit.fontawesome.com/baad5a0a49.js" crossorigin="anonymous"></script>
+
+
+    <link href="/static/mystyle.css" rel="stylesheet">
+    <link href="/static/favicon.ico" rel="icon">
+    <title>hello</title>
+</head>
+
+<body>
+    <div class="main-container d-flex">
+        <div class="sidebar" id="side_nav">
+            <div class="header-box px-2 pt-3 pb-4 d-flex justify-content-between">
+                <h1 class="fs-4"><span class="bg-white text-dark rounded shadow px-2 me-2">FINAL</span><span class="text-white">project</span></h1>
+                <button class="btn d-md-none d-block close-btn px-1 py-0 text-white" onclick="slidein()" id="btn"><i class="fa-sharp fa-solid fa-bars"> tabs</i></button>
+            </div>
+
+            <ul class="list-unstyled px-2">
+                <li class="" id="currentdebt"><a href="/currentdebt" class="text-decoration-none px-3 py-2 d-block"><i class="fa-sharp fa-solid fa-money-bill"></i> current debt</a></li>
+                <li class=""><a href="/newlendPAGE" method="HEAD" class="text-decoration-none px-3 py-2 d-block d-flex justify-content-between">
+                    <span><i class="fa-solid fa-hand-holding-dollar"></i> new Lend</span>
+                    <span class="bg-dark rounded-pill text-white"><!--55--></span>
+                </a>
+                </li>
+                <li class=""><a href="/transactiontimeline" class="text-decoration-none px-3 py-2 d-block" ><i class="fa-solid fa-receipt"></i>  transaction timeline</a></li>
+
+            </ul>
+            <hr class="h-content mx-2">
+            <ul class="h-color-unstyled list-unstyled">
+                <li class=""><a href="/settings" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-gear"></i> settings</a></li>
+                <li class=""><a href="/notification" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-bell"></i> notification</a></li>
+                <li class=""><a href="/" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-arrow-right-to-bracket"></i> Log out</a></li>
+            </ul>
+            <script>
+                menu = false;
+                function slidein(){
+                    document.getElementById("side_nav").style.marginLeft = '-250px';
+                    document.getElementById("side_nav").style.transition = '2s';
+                }
+                function slideout(x){
+                    document.getElementById("side_nav").style.marginLeft = '0px';
+                    document.getElementById("side_nav").style.transition = '2s';
+                    x.classList.toggle("animate");
+                    if (menu == true)
+                    {
+                        slidein();
+                        menu = false;
+                        //document.getElementById("form").classList.remove("change");
+                        document.getElementById("thecontent").classList.remove("change");
+                        //document.getElementById("navbarNavAltMarkup").classList.remove("change");
+                        //document.getElementById("navbarNavAltMarkup").style.transition = '2s';
+                        //document.getElementById("form").style.transition = '2s';
+                    }
+                    else{
+                        menu = true;
+                        //document.getElementById("form").classList.add("change");
+                        document.getElementById("thecontent").classList.add("change");
+                        //document.getElementById("navbarNavAltMarkup").classList.add("change");
+                        //document.getElementById("content").style.transition = '2s';
+                    }
+
+                }
+
+            </script>
+        </div>
+        <div class="content" id="content">
+            <div class="container" id="center">
+            <button class="btn d-md-none d-block close-btn px-1 py-0 text-white" onclick="slideout(this)" id="btn">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div></button>
+            </div>
+            <div id="thecontent">
+            {% block main %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</body>

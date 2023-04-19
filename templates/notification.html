@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<div class="mb-3">
+    <form id="form" onsubmit="return false">
+        <div class="mb-3"><h3><i class="fa-regular fa-bell"></i> Notifications</h3></div>
+        <div class="mb-3"><h6>toggle</h6></div>
+        <div class="mb-3"><div class="form-check form-switch form-switch-md">
+            {% if toggled == 'on' %}
+            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="toggle" checked>
+            {% else %}
+            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="toggle">
+            {% endif %}
+            <label class="form-check-label" for="flexSwitchCheckChecked">I will receive notifications</label>
+          </div></div>
+        <div class="mb-3"><h6>intervals</h6></div>
+        <div class="mb-3"><select class="form-select" name="selected">
+            <option selected>{{ intervals }} day</option>
+            <option value="1">1 day</option>
+            <option value="3">3 day</option>
+            <option value="5">5 day</option>
+        </select></div>
+        <button class="custom-btn btn-3" style="color:azure;" id="btname"><span>Set Interval</span></button>
+    </form>
+</div>
+<script>
+    function notify() {
+      const notification = new Notification("this is to show",{
+        body:"body check"
+      });
+      console.log(Notification.permission)
+      notification.onclick = (e) => {
+        window.location.href = "/settings";
+      }
+    }
+    if (Notification.permission === "granted"){
+
+    } else if (Notification.permission !== "denied"){
+      Notification.requestPermission().then(permission => {
+        if (permission === "granted"){
+        }
+      })
+    }
+    $('#flexSwitchCheckChecked').click(function(){
+      $.ajax({
+          url:'/notification',
+          data:$('form').serialize() + '&' + $.param({bool : 'first'}),
+          type: 'POST',
+      });
+    });
+  </script>
+  <script>
+    $('#btname').click(function(){
+        $.ajax({
+          url:'/notification',
+          data:$('form').serialize() + '&' + $.param({bool : 'second'}),
+          type: 'POST',
+          success: function(response){
+            console.log(response)
+            r = response[1] + ' day/s';
+            const notification = new Notification("your interval has changed",{
+            body: r
+          });
+            notification.onclick = (e) => {
+            window.location.href = "/notification";
+            }
+          }
+      });
+    });
+    </script>
+{% endblock %}

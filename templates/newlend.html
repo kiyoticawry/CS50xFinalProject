@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block main %}
+{% if session["currentdebt"] == 0 %}
+<h1>sorry but your currently in debt, You can only take a new Lend once you've fully paid your Debt.</h1>
+{% else %}
+<div class="mb-3">
+	<form onsubmit="return false">
+		<div class="mb-3"><i class="fa-solid fa-money-bill-transfer fa-xl" id="moneybill"></i><h2>When taking a New Lend</h2></div>
+		<div class="mb-3"><p>This Project doesnt use any currencies only decimal numbers as to showcase the basic features of a traditional Lend on a website. Once a Lend has been taken It should be overtime paid back on a time frame depending on the amount of the lend until it is fully paid. For payments that are overdue, Well since this is just a project it wont really matter though if it did it would have been subject to increase in interest or something related to the law.</p></div>
+		<button class="custom-btn btn-4" onclick="newlend()" id="bt">Take A new lend</button>
+		<p id="m"></p>
+	</form>
+</div>
+{% endif %}
+<script>
+    //if disabled check database each time and go back to original page if false
+
+function newlend(){
+
+	$.ajax({
+	url:'/newlend',
+	type: 'GET',
+	success: function(response)
+        {
+			console.log(response);
+			if (response == '"False</span>"')
+			{
+				location.href = "/lendapplication";
+			}
+			else if (response == '"True</span>"')
+			{
+				document.getElementById("bt").disabled = true;
+				$('#m').html('Sorry! your still currently in debt :(');
+			}
+        },
+	error: function(error)
+        {
+	        console.log(error);
+	    },
+	});
+}
+</script>
+{% endblock %}

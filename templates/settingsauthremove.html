@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<nav class="navbar navbar-expand  navbar-light bg-light">
+    <div class="navbar" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" id="basics" href="/settings" >Basics</a>
+        <a class="nav-item nav-link" id="twoFA" href="/settingsauth" >2 Factor-Authentication</a>
+        <a class="nav-item nav-link" id="others" href="/settingsother" >others</a>
+      </div>
+    </div>
+  </nav>
+<div class="mb-3">
+    <form>
+        <div class="mb-3"><i class="fa-solid fa-text-slash fa-xl"></i><h3>remove authentication</h3></div>
+        <div class="mb-3"><input class="form-control" type="password" placeholder="Password" name="Password"></div>
+        <div class="mb-3"><input class="form-control" type="number" placeholder="authentication key" name="authkey"></div>
+        <button id="bt"type="button" class="btn btn-dark">remove authentication</button>
+        <span id="message"></span>
+    </form>
+</div>
+<script>
+    $('#bt').click(function(){
+        $.ajax({
+          url:'/settingsauthremove',
+          data:$('form').serialize(),
+          type: 'POST',
+          success: function(response){
+            console.log(response)
+            if (response == '"settingsauth</span>"'){
+            location.href = '/settingsauth';
+            }
+            else{
+            $('#message').html(response);
+            }
+          }
+      });
+    });
+    </script>
+{% endblock %}

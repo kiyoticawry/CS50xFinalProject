@@ -1,0 +1,229 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+{% if session['debt'] == 0 %}
+<div class="mb-3">
+	<form onsubmit="return false">
+		<h2><i class="fa-solid fa-comment-dollar"></i> Current debt	</h2>
+		<p>Currently you have not taken any Lend so this page is empty. This is where you will pay back your Lend, It will make sure that you will pay back exactly as it is. I also Added a 3D styled progress bar where you could also change the colors in settings/other.</p>
+	</form>
+</div>
+{% else %}
+<div class="mb-3">
+	<form onsubmit="return false">
+		<h1>{{ debt }}</h1>
+		<article>
+			<div class="chart">
+				<div class="bar bar-30" id="baritself">
+					<div class="face top">
+						<div class="growing-bar" id="growing-bar1"></div>
+					</div>
+					<div class="face side-0">
+						<div class="growing-bar" id="growing-bar2"></div>
+					</div>
+					<div class="face floor">
+						<div class="growing-bar" id="growing-bar3"></div>
+					</div>
+					<div class="face side-a"></div>
+					<div class="face side-b"></div>
+					<div class="face side-1">
+						<div class="growing-bar" id="growing-bar4"></div>
+					</div>
+				</div>
+			</div>
+			<p>this is the progress bar :) {{ percentage }} <i class="fa-regular fa-percent"></i></p>
+		</article>
+		<div id="message"  style="color:red;font-size:15px;"></div>
+
+		<div class="mb-3"><input type="number" autofocus step="0.01" placeholder="amount" class="form-control" name="payment"></div>
+		<div class="mb-3"><div class="bttn-contain">
+			<button class="bttn" id="payment">Pay Lend</button>
+			<div class="bttn-particles">
+			</div>
+		</div></div>
+	</form>
+</div>
+<h3 style="opacity:0;" id="percent">{{ percentage }}</h2>
+<p style="opacity:0;" id="barcolor">{{ barcolor }}</p>
+<p style="opacity:0;" id="demo"></p>
+<script>
+	console.log('{{ notification }}')
+	console.log('{{ intervals }}')
+ 	var count = true;
+    var today = new Date();
+	if ('{{ intervaldate}} ' == 'none')
+	{
+		var tomorrow = new Date();
+	}
+	else{
+		tomorrow = '{{ intervaldate }}';
+	}
+    tomorrow.setDate(tomorrow.getDate() + parseInt('{{ intervals }}'))
+    console.log('tom    ' + tomorrow)
+	if ('{{ notification }}' == 'on')
+	{
+		run()
+	}
+
+function run(){
+if (count == true)
+{
+    $('#btUPpass').attr('disabled','disabled');
+    let index = '4';
+    today = tomorrow
+    const m = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    let mo = m[today.getMonth()];
+    let dayy = today.toLocaleDateString();
+    let yr = today.getFullYear();
+    let emp = ' ';
+    let comma = ',';
+    hrminsec = '6:30:00';
+    t = mo.slice(0, index) + emp + dayy[3] + dayy[4] + comma + emp + yr + emp + hrminsec;
+	console.log(t)
+
+    var countDownDate = new Date(t).getTime();
+
+    var x = setInterval(function() {
+
+    var now = new Date().getTime();
+
+    var distance = countDownDate - now;
+
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+    + minutes + "m " + seconds + "s ";
+
+    if (distance < 0) {
+        clearInterval(x);
+		if (parseInt('{{ intervals }}') == 1){
+			day = '1'
+		}
+		else
+		{
+			day = '{{ intervals }}'
+		}
+
+		const notification = new Notification(day + " days have passed",{
+            body: 'dont forget to pay your lend'
+          });
+            notification.onclick = (e) => {
+            window.location.href = "/currentdebt";
+            }
+    }
+    }, 00);
+}
+}
+</script>
+<script>
+	barcolor = document.getElementById("barcolor").innerText;
+	if (barcolor == 'redpink'){
+		document.getElementById("baritself").classList.add('red');
+	}
+	else{
+		document.getElementById("baritself").classList.add(barcolor);
+	}
+</script>
+<script>
+var intervaldate = new Date();
+$('#payment').click(function(){
+      $.ajax({
+        url:'/currentdebt',
+        data:$('form').serialize() + '&' + $.param({intervaldate: intervaldate}),
+        type: 'POST',
+        success: function(response){
+			console.log(response)
+			$('#message').html(response);
+			if (response == '"correct</span>"'){
+				$('#message').html('');
+				location.href= "/currentdebt";
+			}
+        }
+    });
+  });
+p = document.getElementById('percent').innerText;
+console.log(p)
+
+document.getElementById('growing-bar1').style.width = p +'%';
+document.getElementById('growing-bar2').style.width = p +'%';
+document.getElementById('growing-bar3').style.width = p +'%';
+document.getElementById('growing-bar4').style.width = p +'%';
+
+    $.fn.boom = function(e) {
+	var colors = [
+		'black',
+		'darkblue',
+		'lightblue',
+		// '#FFD100',
+		// '#FF9300',
+		// '#FF7FA4'
+	];
+	var shapes = [
+		'<polygon class="star" points="21,0,28.053423027509677,11.29179606750063,40.97218684219823,14.510643118126104,32.412678195541844,24.70820393249937,33.34349029814194,37.989356881873896,21,33,8.656509701858067,37.989356881873896,9.587321804458158,24.70820393249937,1.0278131578017735,14.510643118126108,13.94657697249032,11.291796067500632"></polygon>',
+		// '<path class="circle" d="m 20 1 a 1 1 0 0 0 0 25 a 1 1 0 0 0 0 -25"></path>',
+		'<polygon class="other-star" points="18,0,22.242640687119284,13.757359312880714,36,18,22.242640687119284,22.242640687119284,18.000000000000004,36,13.757359312880716,22.242640687119284,0,18.000000000000004,13.757359312880714,13.757359312880716"></polygon>',
+		'<polygon class="diamond" points="18,0,27.192388155425117,8.80761184457488,36,18,27.19238815542512,27.192388155425117,18.000000000000004,36,8.807611844574883,27.19238815542512,0,18.000000000000004,8.80761184457488,8.807611844574884"></polygon>'
+	];
+
+	var btn = $(this);
+	var group = [];
+	var num = Math.floor(Math.random() * 50) + 30;
+
+	for(i = 0; i < num; i++) {
+		var randBG = Math.floor(Math.random() * colors.length);
+		var getShape = Math.floor(Math.random() * shapes.length);
+		var c = Math.floor(Math.random() * 10) + 5;
+		var scale = Math.floor(Math.random() * (8 - 4 + 1)) + 4;
+		var x = Math.floor(Math.random() * (150 + 100)) - 100;
+		var y = Math.floor(Math.random() * (150 + 100)) - 100;
+		var sec = Math.floor(Math.random() * 1700) + 1000;
+		var cir = $('<div class="cir"></div>');
+		var shape = $('<svg class="shape">'+shapes[getShape]+'</svg>');
+
+		shape.css({
+			top: e.pageY - btn.offset().top + 20,
+			left: e.pageX - btn.offset().left + 40,
+			'transform': 'scale(0.'+scale+')',
+			'transition': sec + 'ms',
+			'fill': colors[randBG]
+		});
+
+		btn.siblings('.bttn-particles').append(shape);
+
+		group.push({shape: shape, x: x, y: y});
+	}
+
+	for (var a = 0; a < group.length; a++) {
+		var shape = group[a].shape;
+		var x = group[a].x, y = group[a].y;
+		shape.css({
+			left: x + 50,
+			top: y + 15,
+			'transform': 'scale(0)'
+		});
+	}
+
+	setTimeout(function() {
+		for (var b = 0; b < group.length; b++) {
+			var shape = group[b].shape;
+			shape.remove();
+		}
+		group = [];
+	}, 2000);
+
+}
+
+$(function() {
+	$(document).on('click', '.bttn', function(e) {
+		$(this).boom(e);
+	});
+
+});
+</script>
+
+{% endif %}
+{% endblock %}

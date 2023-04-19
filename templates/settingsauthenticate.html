@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<nav class="navbar navbar-expand  navbar-light bg-light">
+    <div class="navbar" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" id="basics" href="/settings" >Basics</a>
+        <a class="nav-item nav-link" id="twoFA" href="/settingsauth" >2 Factor-Authentication</a>
+        <a class="nav-item nav-link" id="others" href="/settingsother" >others</a>
+      </div>
+    </div>
+  </nav>
+<div class="mb-3">
+    <form id="form">
+        <h3 style="margin:10px;">using the google authenticator app or any other authenticator app please Scan this QR Code</h3>
+        <img id="picture" src="{{ qrcode(qrcude) }}" style="border:solid;color:lightblue;padding:10px;background-color:lightblue;padding-bottom:100px;">
+        <h3 style="margin:10px;">you could also copy the Key<h6 style="margin:10px;">{{ key }}</h6>
+        <div class="mb-3"><input type="text" placeholder="Type the QR Code" class="form-control" name="qr"></div>
+        <div class="mb-3"><button id="btname" type="button" class="btn btn-dark">Confirm QR Code</button>
+        <span id="message"></span>
+    </form>
+</div>
+<script>
+  $('#btname').click(function(){
+      $.ajax({
+        url:'/settingsauthenticate',
+        data:$('form').serialize(),
+        type: 'POST',
+        success: function(response){
+          console.log(response)
+          if (response == '"settingsauth</span>"'){
+            location.href = '/settingsauth';
+          }
+          else{
+          $('#message').html(response);
+          }
+        }
+    });
+  });
+  </script>
+{% endblock %}

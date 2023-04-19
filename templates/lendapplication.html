@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<div class="multi-button">
+    <button onclick="my('250')">250</button>
+    <button onclick="my('500')">500</button>
+    <button onclick="my('750')">750</button>
+    <button onclick="my('1000')">1000</button>
+    <button onclick="my('1250')">1250</button>
+    <button onclick="my('1500')">1500</button>
+    <button onclick="my('1750')">1750</button>
+    <button onclick="my('2000')">2000</button>
+    <button onclick="my('2500')">2500</button>
+  </div>
+
+  <div class="mb-3"><h4 id="demo">Once you have taken a new lend.There will be a 3% interest</h4></div>
+  <div class="mb-3" style="margin:1vh;">
+  <h6><i class="fa-solid fa-scale-balanced fa-l"></i> this lend must be fully paid inorder for you to take another</h6>
+  </div>
+  <div class="mb-3" id="newlend">
+    <button class="custom-btn btn-6"><span onclick="lendapplication()">accept new lend</span></button>
+  </div>
+
+<script>
+var number = 'none';
+function my(x){
+  y = x * 0.03;
+  document.getElementById("demo").innerHTML = 'Once you have taken a new lend.There will be a 3% interest of ' + y;
+  number = x;
+}
+function lendapplication(){
+  console.log(number);
+              $.ajax({
+                  url:'/lendapplication',
+                  data:'&' + $.param({number : number}),
+                  type: 'POST',
+                  success: function(response){
+                    console.log(response);
+                    if (response == '"correct</span>"'){
+                      location.href = "/currentdebt";
+                    }
+                  },
+                  error: function(error) {
+                  }
+                });
+          }
+document.getElementById("newlend").style.marginLeft = '37%';
+</script>
+{% endblock %}

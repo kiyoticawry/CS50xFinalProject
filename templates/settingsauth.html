@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<nav class="navbar navbar-expand  navbar-light bg-light">
+    <div class="navbar" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" id="basics" href="/settings" >Basics</a>
+        <a class="nav-item nav-link" id="twoFA" href="/settingsauth" >2 Factor-Authentication</a>
+        <a class="nav-item nav-link" id="others" href="/settingsother" >others</a>
+      </div>
+    </div>
+  </nav>
+<div class="mb-3">
+    <form onsubmit="return false">
+      {% if session["key"] %}
+        <div class="mb-3"><h3><i class="fa-solid fa-key"></i> 2 Factor authentication</h3></div>
+        <div class="mb-3"><button style="--content: 'remove authentication';" id="bubbles">
+          <div class="left"></div>
+          <a href="/settingsauthremove" style="text-decoration:none;color:black;">remove authentication</a>
+          <div class="right"></div>
+        </button>
+        </div>
+        <hr id="hrblack">
+        <p>Removing your authentication will weaken your security but you can log in faster</p>
+        {% else %}
+        <div class="mb-3"><h3><i class="fa-solid fa-key"></i> 2 Factor authentication</h3></div>
+        <div class="mb-3" id="bt"><button style="--content: 'add authentication';" id="bubbles">
+          <div class="left"></div>
+            <a href="settingsauthenticate" style="text-decoration:none;color:black;">add authentication</a>
+          <div class="right"></div>
+        </button>
+        </div>
+        <hr id="hrblack">
+        <p>Adding authentication will strengthen your security</p>
+        {% endif %}
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<script>
+document.querySelector('.containerer').onmousemove = (e) => {
+
+const x = e.pageX - e.target.offsetLeft
+const y = e.pageY - e.target.offsetTop
+
+e.target.style.setProperty('--x', `${ x }px`)
+e.target.style.setProperty('--y', `${ y }px`)
+
+}
+</script>
+<div class="containerer">
+    <ul class="responsive-table">
+      <li class="table-header">
+        <div class="col col-1">ID lend</div>
+        <div class="col col-2">Date</div>
+        <div class="col col-3">Amount Due</div>
+        <div class="col col-4">Payment Status</div>
+      </li>
+      {% for t in table %}
+      <li class="table-row" onclick="next('{{t[0]}}')">
+        <div class="col col-1" data-label="IDLend">{{t[0]}}</div>
+        <div class="col col-2" data-label="Date">{{t[1]}}</div>
+        <div class="col col-3" data-label="Amount">{{t[2]}}</div>
+        <div class="col col-4" data-label="Payment Status">{{t[3]}}</div>
+      </li>
+      {% endfor %}
+    </ul>
+</div>
+  <script>
+    function my(x){
+      location.href = "/transactiontable";
+    }
+    function next(x){
+      $.ajax({
+          url:'/transactiontimeline',
+          data:'&' + $.param({transactID : x}),
+          type: 'POST',
+          success: function(response){
+          if (response == '"correct</span>"'){
+            console.log(response)
+            location.href = "/transactiontable";
+          }
+          }
+      });
+    }
+  </script>
+{% endblock %}

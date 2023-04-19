@@ -1,0 +1,152 @@
+{% extends "layout.html" %}
+
+{% block main %}
+{% block settings %}
+<nav class="navbar navbar-expand  navbar-light bg-light">
+    <div class="navbar" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" id="basics" href="/settings" >Basics</a>
+        <a class="nav-item nav-link" id="twoFA" href="/settingsauth" >2 Factor-Authentication</a>
+        <a class="nav-item nav-link" id="others" href="/settingsother" >others</a>
+      </div>
+    </div>
+  </nav>
+  {% endblock %}
+<div class="mb-3">
+    <form id="form" class="form">
+        <div class="mb-3"><h3><i class="fa-solid fa-user-astronaut"></i> Change username</h3></div>
+        <div class="mb-3"><input disabled id="current username" name="Current Username" type="text" placeholder={{name}} class="form-control"></div>
+        <div class="mb-3"><input type="text" placeholder="New Username" name="New Username" class="form-control"></div>
+        <div class="mb-3"><button id="btname" type="button" class="btn btn-dark">Change Username</button><span id="btnamemessage" style="padding-left:10px;color:red"></span>
+        <hr id="hrblack">
+        <div class="mb-3"><h3><i class="fa-solid fa-lock"></i> Update Password</h3></div>
+        <div class="mb-3"><input type="password" placeholder="Old Password" name="Old Password" class="form-control"></div>
+        <div class="mb-3"><input type="password" placeholder="New Password" name="New Password" class="form-control"></div>
+        <div class="mb-3">  <input type="password" placeholder="Confirm Password" name="Confirm Password" class="form-control"></div>
+        <div class="mb-3"><button id="btUPpass"type="button" class="btn btn-dark">Update Password</button><span id="btUPmessage" style="padding-left:10px;color:red"><p id="demo"></p></span></div>
+        <hr id="hrblack">
+        </div>
+    </form>
+</div>
+<script>
+// change username
+$(function(){
+					$('#btname').click(function(){
+						$.ajax({
+							url:'/changeusername',
+							data:$('form').serialize(),
+							type: 'POST',
+							success: function(response){
+								$('#btnamemessage').html(response);
+                                console.log(response);
+                                if (response == '"youve changed your name succesfully!</span>"'){
+									document.getElementById("btnamemessage").style.color = 'green';
+                                    document.getElementById("btnamemessage").style.fontSize = '10px';
+							    };
+
+                            },
+							error: function(error) {
+								console.log(error);
+								$('#btnamemessage').html(error)
+							},
+						});
+					});
+
+                });
+</script>
+<script>
+    //update password
+    var count = false;
+    var today = new Date();
+    tomorrow = new Date(today)
+    tomorrow.setDate(tomorrow.getDate() + 7)
+    console.log('tom    ' + tomorrow)
+    $(function(){
+					$('#btUPpass').click(function(){
+						$.ajax({
+							url:'/updatepassword',
+							data:$('form').serialize() + '&' + $.param({date : tomorrow}),
+							type: 'POST',
+							success: function(response){
+								$('#btUPmessage').html(response);
+                                console.log(response);
+                                if (response == '"you password succesfully changed!</span>"'){
+									document.getElementById("btUPmessage").style.color = 'green';
+                                    $('#btUPpass').attr('disabled','disabled');
+							    };
+                            },
+							error: function(error) {
+								console.log(error);
+								$('#btUPmessage').html(error)
+							},
+						});
+					});
+
+                });
+
+
+$.ajax({
+    url:'/updatepassword',
+    type: 'GET',
+    success: function(response){
+        console.log(response);
+        if (response == '"False</span>"'){
+            //do nothing
+		}
+        else{
+            count = true;
+            tomorrow = new Date(response)
+            run()
+        }
+    },
+
+});
+function run(){
+if (count == true)
+{
+    $('#btUPpass').attr('disabled','disabled');
+    let index = '4';
+    today = tomorrow
+    const m = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    let mo = m[today.getMonth()];
+    let dayy = today.toLocaleDateString();
+    let yr = today.getFullYear();
+    let emp = ' ';
+    let comma = ',';
+    hrminsec = '6:30:00';
+    t = mo.slice(0, index) + emp + dayy[3] + dayy[4] + comma + emp + yr + emp + hrminsec;
+
+    var countDownDate = new Date(t).getTime();
+
+    var x = setInterval(function() {
+
+    var now = new Date().getTime();
+
+    var distance = countDownDate - now;
+
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+    + minutes + "m " + seconds + "s ";
+
+    if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("demo").innerHTML = "EXPIRED";
+        count = false;
+        $.ajax({
+            url:'/updatepasswordx',
+            type: 'POST',
+            success: function(response){
+                console.log(response);
+                $('#btUPpass').removeAttr('disabled');
+                },
+            });
+    }
+    }, 00);
+}
+}
+</script>
+{% endblock %}

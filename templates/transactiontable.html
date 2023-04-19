@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<div class="tabletimeline">
+	<table>
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Amount Paid</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for t in table %}
+			<tr>
+				<td>{{t[0]}}</td>
+				<td>{{t[1]}}</td>
+				{% if t[2] == 'True' %}
+				<td>Last Payment</td>
+				{% endif %}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<nav class="navbar navbar-expand  navbar-light bg-light">
+    <div class="navbar" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" id="basics" href="/settings" >Basics</a>
+        <a class="nav-item nav-link" id="twoFA" href="/settingsauth" >2 Factor-Authentication</a>
+        <a class="nav-item nav-link" id="others" href="/settingsother" >others</a>
+      </div>
+    </div>
+  </nav>
+<div class="mb-3">
+    <form onsubmit="return false">
+        <div class="mb-3"><h3><i class="fa-solid fa-bars-progress"></i> Progress bar color</h3></div>
+        <div class="mb-3">
+            <select class="form-select" name="barcolor">
+              <option selected id="barcolor">{{ barcolor }}</option>
+              <option value="cyan" style="color:blue;">cyan </option>
+              <option value="redpink" style="color:#ec008c99;">redpink</option>
+              <option value="lime" style="color:lime;">lime</option>
+            </select>
+        </div>
+        <div class="mb-3"><button id="btname" type="button" class="btn btn-dark" onclick="changeColor()">Change Color</button>
+        <hr id="hrblack">
+        <div class="mb-3"><h3><i class="fa-solid fa-language"></i> Language</h3></div>
+        <div class="mb-3">
+            <select class="form-select" name="language">
+            <option selected>{{ language }}</option>
+            <option value="FL">FILIPINO</option>
+            <option value="EN">ENGLISH</option>
+            <option value="JP">JAPANESE</option>
+        </select>
+        </div>
+        <div class="mb-3"><button id="btname" type="button" class="btn btn-dark" onclick="changelng()">Change Language</button>
+        <hr id="hrblack">
+        <div class="mb-3"><h3><i class="fa-solid fa-trash-can"></i> delete Account</h3></div>
+        <div class="mb-3"><button id="deleteac" type="button" class="btn btn-dark" onclick="deleteaccount()">delete Account</button>
+          <hr id="hrblack">
+    </form>
+</div>
+<script>
+function changeColor(){
+  $.ajax({
+          url:'/settingsother',
+          data:$('form').serialize() + '&' + $.param({change : 'barcolor'}),
+          type: 'POST',
+          success: function(response){
+            if (response == '"correct</span>"'){
+              $('#barcolor').html(response);
+              location.href = '/currentdebt'
+            }
+          }
+      });
+}
+
+function changelng(){
+  $.ajax({
+          url:'/settingsother',
+          data:$('form').serialize() + '&' + $.param({change : 'language'}),
+          type: 'POST',
+          success: function(response){
+            if (response == '"correct</span>"'){
+            }
+          }
+      });
+}
+
+function deleteaccount(){
+  window.location.href = '/deleteaccount';
+}
+</script>
+{% endblock %}
