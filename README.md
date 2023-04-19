@@ -11,3 +11,12 @@ When you take a new lend there will be a 3% interest meaning 3% is added to your
 In Notifications I have a toggle feature that shows whether you want to receive notifactions or not and if you want that you could decide on what intervals you could them. The basic is 1 day but you could change them to 3 or 5 days, what this means is that you will receive a notifcation reminding of the debt you havent paid once it passes the interval. The interval then restarts each time you the current debt and will only notify you once not every interval. If you dont have a any current debt that it will not notify you at all until you take on a new lend.
 
 for Settings in basics, you can change your username which you will use to login anytime you want, the above bar shows your current username. for updating your password you are required to type your old password and then your new password and then confirm that password again. once succesful there will be a countdown till next week of which you cannot change your current password.for Settings 2 Factor Authentication, it generates a QR code of which you have to scan in a 3rd party authenticator app like google authenticator which will show the code where you will type it as to confirm that you have the authentication which promptly adds it to your accound, Now you will be required to type your authentication each time you log in.For Settings others,you can change the progress barcolor to cyan, redpink and lime with cyan being the default. you can also change the language even though it doesnt work By then I had already written a the entire route and a database for it thats why I still think its worth keeping for future use. The last feature is delete account which allows you to delete your account , prompting you only for your password and if you have authentication that it will also you prompt you for it before it deletes your account. When it deletes account it includes the entire transact table and transact timeline meaning your transactions and payments would be forgotten. I did this because I found unneccessary in the meantime to keep such data and simply opted for a full deletion of any data related to the user.
+
+
+
+# Set up 
+ 1. get an API key, for example in google cloud platform or IEX cloud
+ 2. make and copy the API key
+ 3. in command line: export={PUT API KEY HERE}
+ 4. In command line: flask run
+   
