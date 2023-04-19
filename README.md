@@ -20,6 +20,4 @@ for Settings in basics, you can change your username which you will use to login
  3. make and copy the API key (this is to export it)
  4. in command line: ```export API_KEY={PUT API KEY HERE}```
  5. In command line: ```flask run```
- 
- 
    
