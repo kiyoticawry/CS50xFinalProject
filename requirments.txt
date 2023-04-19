@@ -1,0 +1,7 @@
+cs50
+datetime
+pyotp
+werkzeug
+flask
+flask_session
+functools
