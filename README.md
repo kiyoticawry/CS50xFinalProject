@@ -14,9 +14,10 @@ for Settings in basics, you can change your username which you will use to login
 
 
 
-# Set up 
- 1. get an API key, for example in google cloud platform or IEX cloud
- 2. make and copy the API key
- 3. in command line: export={PUT API KEY HERE}
- 4. In command line: flask run
+# Set up
+ 1. in command line: pip install -r requirments.txt
+ 2. get an API key, for example in google cloud platform or IEX cloud
+ 3. make and copy the API key (this is to export it)
+ 4. in command line: export API_KEY={PUT API KEY HERE}
+ 5. In command line: flask run
    
