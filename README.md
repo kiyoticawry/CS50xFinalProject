@@ -27,5 +27,5 @@ for Settings in basics, you can change your username which you will use to login
  4. in command line: ```export API_KEY={PUT API KEY HERE}```
  5. In command line: ```flask run```
    
-# certificate 
+# Certificate 
 ![image](https://github.com/kiyoticawry/CS50xFinalProject/assets/112307652/e23e8a4b-3bd4-4b32-960a-dd5a66db28ae)
